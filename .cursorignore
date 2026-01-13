@@ -1,0 +1,255 @@
+
+# Environment Variables & Configuration
+.env*
+*.env
+.envrc
+*.local
+config.local.*
+secrets.yaml
+secrets.yml
+credentials.json
+service-account*.json
+application-secrets.properties
+application-secrets.yml
+run.sh
+
+# Certificates & Keys
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.truststore
+*.crt
+*.cer
+*.der
+
+# SSH Keys
+id_rsa
+id_dsa
+*.ppk
+authorized_keys
+known_hosts
+
+# Cloud Provider Credentials
+.aws/
+.azure/
+.gcloud/
+*.credentials
+
+# Database Backups & Dumps
+*.sql
+*.dump
+*.backup
+*.db-backup
+*.bak
+
+
+# Byte-compiled / Optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Distribution / Packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environments
+venv/
+ENV/
+env/
+.venv/
+.ENV/
+virtualenv/
+pipenv/
+.python-version
+
+# Testing & Coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+coverage.xml
+*.cover
+.hypothesis/
+
+# Type Checking & Linting
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+.pytype/
+
+# Package Management
+poetry.lock
+Pipfile.lock
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Dependencies
+node_modules/
+bower_components/
+jspm_packages/
+vendor/
+
+# Build Outputs
+.next/
+.nuxt/
+.cache/
+.parcel-cache/
+.vercel/
+.turbo/
+out/
+
+# Package Manager Files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+.yarn/
+.pnp/
+.pnp.js
+
+# Testing & Coverage
+coverage/
+.nyc_output/
+jest-coverage/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Minified/Bundle Files
+*.min.js
+*.min.css
+*.bundle.js
+*.chunk.js
+
+# Compiled Java
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+hs_err_pid*
+replay_pid*
+
+# Build Tools
+target/
+bin/
+.gradle/
+.gradletasknamecache
+gradle-app.setting
+!gradle-wrapper.jar
+
+# Maven
+.mvn/
+mvnw
+mvnw.cmd
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+
+# IDE Specific
+*.iml
+*.ipr
+*.iws
+.settings/
+.classpath
+.project
+.factorypath
+.metadata
+.recommenders/
+
+# JetBrains IDEs
+.idea/
+.idea_modules/
+
+# VS Code
+.vscode/
+
+# Other Editors
+*.sublime-project
+*.sublime-workspace
+.vim/
+.editorconfig
+*.code-workspace
+
+# Log Files
+*.log
+logs/
+*.log.*
+
+# Temporary Files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+.#*
+
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Database Files
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+*.rdb
+
+# Large Data Files
+#*.csv
+*.tsv
+*.parquet
+*.feather
+*.hdf5
+*.h5
+
+# Test Outputs
+test-results/
+test-reports/
+allure-results/
+allure-report/
+
+# CI/CD
+.gitlab-ci-local/
+
+# Docker
+*.dockerignore
+docker-compose.override.yml

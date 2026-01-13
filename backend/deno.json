@@ -1,0 +1,39 @@
+{
+  "tasks": {
+    "dev": "deno run --allow-net --allow-env --allow-read --watch src/main.ts",
+    "start": "deno run --allow-net --allow-env --allow-read src/main.ts",
+    "migrate": "deno run -A npm:prisma migrate dev",
+    "generate": "deno run -A npm:prisma generate",
+    "studio": "deno run -A npm:prisma studio",
+    "test": "deno test --allow-all"
+  },
+  "imports": {
+    "hono": "https://deno.land/x/hono@v4.0.10/mod.ts",
+    "hono/": "https://deno.land/x/hono@v4.0.10/",
+    "zod": "https://deno.land/x/zod@v3.22.4/mod.ts",
+    "bcrypt": "https://deno.land/x/bcrypt@v0.4.1/mod.ts",
+    "@prisma/client": "npm:@prisma/client@^5.8.0",
+    "prisma": "npm:prisma@^5.8.0",
+    "djwt": "https://deno.land/x/djwt@v3.0.1/mod.ts",
+    "smtp": "https://deno.land/x/smtp@v0.7.0/mod.ts"
+  },
+  "compilerOptions": {
+    "strict": true,
+    "lib": ["deno.window", "dom"],
+    "allowJs": false,
+    "checkJs": false
+  },
+  "fmt": {
+    "useTabs": false,
+    "lineWidth": 100,
+    "indentWidth": 2,
+    "singleQuote": true,
+    "proseWrap": "preserve"
+  },
+  "lint": {
+    "rules": {
+      "tags": ["recommended"]
+    }
+  }
+}
+

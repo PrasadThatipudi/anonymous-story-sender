@@ -88,8 +88,8 @@ git push -u origin main
    - `JWT_EXPIRY` = "24h"
    - `GMAIL_USER`
    - `GMAIL_APP_PASSWORD`
-   - `BOOTSTRAP_ADMIN_EMAIL`
-   - `BOOTSTRAP_ADMIN_PASSWORD`
+   - `BOOTSTRAP_ADMIN_EMAIL` (Optional - only for initial setup)
+   - `BOOTSTRAP_ADMIN_PASSWORD` (Optional - only for initial setup)
    - `FRONTEND_MANAGER_URL` (will update after frontend deployment)
    - `CORS_ORIGINS` (will update after frontend deployment)
    - `PORT` = "8000"

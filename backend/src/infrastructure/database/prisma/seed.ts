@@ -9,6 +9,13 @@ async function seed() {
   const prisma = getPrismaClient();
   const env = getEnv();
 
+  // Skip seeding if bootstrap credentials not provided
+  if (!env.BOOTSTRAP_ADMIN_EMAIL || !env.BOOTSTRAP_ADMIN_PASSWORD) {
+    console.log('⏭️  Skipping bootstrap admin seed (credentials not provided)');
+    console.log('ℹ️  Use manager invitation system to add new admins');
+    return;
+  }
+
   try {
     const hashedPassword = await bcrypt.hash(env.BOOTSTRAP_ADMIN_PASSWORD, BCRYPT_ROUNDS as any);
 

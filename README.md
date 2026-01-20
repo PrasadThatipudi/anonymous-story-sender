@@ -55,7 +55,7 @@ cp .env.example .env
 # Edit .env with your configuration:
 # - DATABASE_URL (Neon connection string)
 # - Gmail credentials (GMAIL_USER, GMAIL_APP_PASSWORD)
-# - Bootstrap admin credentials (BOOTSTRAP_ADMIN_EMAIL, BOOTSTRAP_ADMIN_PASSWORD)
+# - Bootstrap admin credentials (BOOTSTRAP_ADMIN_EMAIL, BOOTSTRAP_ADMIN_PASSWORD) - Optional, only for initial setup
 # - FRONTEND_MANAGER_URL (http://localhost:5174 for dev)
 
 # Generate Prisma client
@@ -182,8 +182,11 @@ GMAIL_APP_PASSWORD=your_16_char_app_password
 CORS_ORIGINS=http://localhost:5173,http://localhost:5174
 PORT=8000
 NODE_ENV=development
+
+# Optional: Bootstrap admin (only needed for initial database setup)
 BOOTSTRAP_ADMIN_EMAIL=admin@yourcompany.com
 BOOTSTRAP_ADMIN_PASSWORD=SecurePassword123!
+
 FRONTEND_MANAGER_URL=http://localhost:5174
 ```
 

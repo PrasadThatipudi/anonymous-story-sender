@@ -43,7 +43,8 @@ CORS_ORIGINS=http://localhost:5173,http://localhost:5174
 JWT_SECRET=generate_a_random_32_character_string_here
 JWT_EXPIRY=24h
 
-# Bootstrap Admin (Your First Admin Account)
+# Bootstrap Admin (Optional - only needed for initial setup)
+# If not provided, use the manager invitation system to add admins
 BOOTSTRAP_ADMIN_EMAIL=admin@yourcompany.com
 BOOTSTRAP_ADMIN_PASSWORD=YourSecurePassword123!
 
@@ -72,11 +73,12 @@ cd backend
 # Generate Prisma client
 deno task generate
 
-# Run database migrations (this also creates your bootstrap admin)
+# Run database migrations (this also creates your bootstrap admin if credentials provided)
 deno task migrate
 
-# The seed script automatically creates your first admin account
-# using BOOTSTRAP_ADMIN_EMAIL and BOOTSTRAP_ADMIN_PASSWORD from .env
+# If BOOTSTRAP_ADMIN_EMAIL and BOOTSTRAP_ADMIN_PASSWORD are provided in .env,
+# the seed script automatically creates your first admin account.
+# Otherwise, use the manager invitation system or manually create an admin.
 ```
 
 ### Step 5: Start Everything
@@ -116,11 +118,11 @@ npm run dev
 
 ### Test the Manager App
 
-#### Login as Bootstrap Admin
+#### Login as Admin
 1. Open http://localhost:5174
-2. Login with your bootstrap admin credentials:
-   - Email: The one you set in `BOOTSTRAP_ADMIN_EMAIL`
-   - Password: The one you set in `BOOTSTRAP_ADMIN_PASSWORD`
+2. Login with your admin credentials:
+   - If you provided bootstrap credentials: Use `BOOTSTRAP_ADMIN_EMAIL` and `BOOTSTRAP_ADMIN_PASSWORD`
+   - If using invitation system: Use the credentials you set when accepting the invitation
 3. You'll see the full admin dashboard
 
 #### Test Admin Features

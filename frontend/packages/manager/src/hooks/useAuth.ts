@@ -1,5 +1,11 @@
 import { useMutation } from '@tanstack/react-query';
-import { login as apiLogin, logout as apiLogout, LoginRequest } from '../api/auth';
+import { 
+  login as apiLogin, 
+  logout as apiLogout, 
+  acceptInvitation as apiAcceptInvitation,
+  LoginRequest,
+  AcceptInvitationRequest 
+} from '../api/auth';
 import { useAuth as useAuthStore } from '../contexts/AuthContext';
 import toast from 'react-hot-toast';
 
@@ -26,6 +32,22 @@ export const useLogout = () => {
     onSuccess: () => {
       clearAuth();
       toast.success('Logged out successfully');
+    },
+  });
+};
+
+export const useAcceptInvitation = () => {
+  const { setAuth } = useAuthStore();
+
+  return useMutation({
+    mutationFn: (data: AcceptInvitationRequest) => apiAcceptInvitation(data),
+    onSuccess: (data) => {
+      setAuth(data.token, data.manager);
+      toast.success('Account created successfully! Welcome!');
+    },
+    onError: (error: any) => {
+      const message = error.response?.data?.message || error.message || 'Failed to accept invitation';
+      toast.error(message);
     },
   });
 };

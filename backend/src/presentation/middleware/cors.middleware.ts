@@ -15,9 +15,8 @@ export async function corsMiddleware(c: Context, next: Next) {
   c.res.headers.set('Access-Control-Max-Age', '86400');
 
   if (c.req.method === 'OPTIONS') {
-    return c.text('', 204);
+    return new Response(null, { status: 204 });
   }
 
   await next();
 }
-

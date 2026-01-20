@@ -17,20 +17,46 @@ Welcome! This guide will help you set up and run the Anonymous Story Submission 
 2. Create a new project
 3. Copy your connection string (looks like `postgresql://...`)
 
-### Step 2: Configure Backend (1 min)
+### Step 2: Configure Backend (2 min)
 
 ```bash
 cd backend
 
 # Create environment file
 cp .env.example .env
-
-# Open .env and update:
-# - DATABASE_URL with your Neon connection string
-# - GMAIL_USER with your Gmail address
-# - GMAIL_APP_PASSWORD (see Gmail setup below)
-# - MANAGER_EMAILS with your email
 ```
+
+Open `.env` and update these required variables:
+
+```bash
+# Database
+DATABASE_URL=your_neon_connection_string_here
+
+# Gmail SMTP
+GMAIL_USER=your_email@gmail.com
+GMAIL_APP_PASSWORD=your_16_char_app_password
+
+# Manager Configuration
+MANAGER_EMAILS=your_email@example.com
+CORS_ORIGINS=http://localhost:5173,http://localhost:5174
+
+# JWT Security
+JWT_SECRET=generate_a_random_32_character_string_here
+JWT_EXPIRY=24h
+
+# Bootstrap Admin (Your First Admin Account)
+BOOTSTRAP_ADMIN_EMAIL=admin@yourcompany.com
+BOOTSTRAP_ADMIN_PASSWORD=YourSecurePassword123!
+
+# Frontend URL (for invitation emails)
+FRONTEND_MANAGER_URL=http://localhost:5174
+
+# Server
+PORT=8000
+DENO_ENV=development
+```
+
+> 💡 **Tip:** The bootstrap admin account is created automatically when you run migrations for the first time. Use these credentials to log in to the manager dashboard.
 
 ### Step 3: Setup Gmail SMTP (2 min)
 
@@ -47,12 +73,11 @@ cd backend
 # Generate Prisma client
 deno task generate
 
-# Run database migrations
+# Run database migrations (this also creates your bootstrap admin)
 deno task migrate
 
-# Create your manager account
-deno run --allow-all scripts/create-manager.ts
-# Enter your email and password when prompted
+# The seed script automatically creates your first admin account
+# using BOOTSTRAP_ADMIN_EMAIL and BOOTSTRAP_ADMIN_PASSWORD from .env
 ```
 
 ### Step 5: Start Everything
@@ -91,11 +116,75 @@ npm run dev
 4. Check your email for notification! 📧
 
 ### Test the Manager App
+
+#### Login as Bootstrap Admin
 1. Open http://localhost:5174
-2. Login with the credentials you created
-3. View your submitted story
-4. Try updating status, adding notes
-5. Test the export feature
+2. Login with your bootstrap admin credentials:
+   - Email: The one you set in `BOOTSTRAP_ADMIN_EMAIL`
+   - Password: The one you set in `BOOTSTRAP_ADMIN_PASSWORD`
+3. You'll see the full admin dashboard
+
+#### Test Admin Features
+1. View submitted stories
+2. Update story status and add notes
+3. Export stories (Admin only)
+4. **Test Team Management:**
+   - Click "Invite Manager" in the Team Management section
+   - Enter an email and select role (Admin or Manager)
+   - Check that email for the invitation link
+
+#### Test Invitation Flow
+1. Open the invitation email
+2. Click the invitation link
+3. Set your password
+4. You'll be automatically logged in
+5. If you invited as "Manager" (not Admin), notice the limited permissions:
+   - Can view stories and add notes
+   - Cannot delete, export, or invite others
+
+## 👥 Manager Roles & Permissions
+
+The platform supports two types of managers with different access levels:
+
+### Admin Managers
+- ✅ Full access to all features
+- ✅ View, update, delete stories
+- ✅ Export stories to CSV/JSON
+- ✅ **Invite new managers** (both Admin and Manager roles)
+- ✅ View team members and pending invitations
+- ✅ Revoke pending invitations
+
+### Regular Managers
+- ✅ View all submitted stories
+- ✅ Add notes to stories
+- ❌ Cannot change story status
+- ❌ Cannot delete stories
+- ❌ Cannot export data
+- ❌ Cannot invite other managers
+
+### How Invitations Work
+
+1. **Admin creates invitation:**
+   - Enters invitee's email
+   - Selects role (Admin or Manager)
+   - System sends email with secure token
+
+2. **Invitee receives email:**
+   - Email includes role information
+   - Link is valid for 48 hours
+   - Token is single-use only
+
+3. **Invitee accepts:**
+   - Clicks link in email
+   - Sets their password
+   - Automatically logged in
+   - Access granted based on assigned role
+
+4. **Security features:**
+   - Tokens are cryptographically secure (64 characters)
+   - Rate limited (3 attempts per 15 minutes)
+   - Server-side role validation on all endpoints
+   - Expired/used tokens are rejected
 
 ## 📁 Project Structure
 
@@ -180,6 +269,12 @@ deno task test
 - Input validation with Zod
 - PII-safe logging
 - SQL injection prevention via Prisma
+- Role-based access control (Admin vs Manager permissions)
+- Secure invitation system with token expiration (48 hours)
+- Single-use invitation tokens
+- Rate limiting on invitation endpoints (10/hour for creation, 3/15min for acceptance)
+- Server-side permission validation
+- Audit logging for privileged actions
 
 Enjoy building your story platform! 🚀
 

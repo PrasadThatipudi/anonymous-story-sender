@@ -1,10 +1,12 @@
-import { PrismaClient } from '@prisma/client';
+// @ts-ignore: npm module  
+import pkg from 'npm:@prisma/client@5.22.0';
+const { PrismaClient } = pkg;
 import { StoryEntity, CreateStoryInput, UpdateStoryInput } from '../../../domain/entities/story.entity.ts';
 import { StoryStatus } from '../../../domain/enums/story-status.enum.ts';
 import { StoryListFilter, StoryStats } from '../../../domain/types/story.types.ts';
 
 export class StoryRepository {
-  constructor(private readonly prisma: PrismaClient) {}
+  constructor(private readonly prisma: any) {}
 
   async create(data: CreateStoryInput): Promise<StoryEntity> {
     return await this.prisma.story.create({
@@ -109,4 +111,3 @@ export class StoryRepository {
     });
   }
 }
-

@@ -1,29 +1,31 @@
-import { SmtpClient } from 'smtp';
+import nodemailer from 'nodemailer';
 import { getEnv, getManagerEmails } from '../../config/env.ts';
 
 export class GmailClient {
-  private client: SmtpClient;
+  private transporter: any;
 
   constructor() {
     const env = getEnv();
     
-    this.client = new SmtpClient({
-      connection: {
-        hostname: 'smtp.gmail.com',
-        port: 465,
-        tls: true,
-        auth: {
-          username: env.GMAIL_USER,
-          password: env.GMAIL_APP_PASSWORD,
-        },
+    console.log('🔥 GmailClient constructor entry - using NODEMAILER');
+    
+    this.transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: env.GMAIL_USER,
+        pass: env.GMAIL_APP_PASSWORD,
       },
     });
+
+    console.log('🔥 Transporter created');
   }
 
   async sendNewStoryNotification(storyId: string, contentPreview: string): Promise<void> {
     const env = getEnv();
     const managerEmails = getManagerEmails();
     const timestamp = new Date().toISOString();
+
+    console.log('🔥 sendNewStoryNotification entry');
 
     const subject = '📖 New Anonymous Story Submitted';
     const preview = contentPreview.substring(0, 200) + (contentPreview.length > 200 ? '...' : '');
@@ -147,13 +149,17 @@ Story content is never included in email logs for privacy protection.
 
     try {
       for (const recipientEmail of managerEmails) {
-        await this.client.send({
+        console.log('🔥 About to call transporter.sendMail');
+
+        await this.transporter.sendMail({
           from: env.GMAIL_USER,
           to: recipientEmail,
-          subject,
-          content: textContent,
+          subject: subject,
+          text: textContent,
           html: htmlContent,
         });
+
+        console.log('🔥 Email sent successfully');
 
         console.log({
           timestamp: new Date().toISOString(),
@@ -166,6 +172,8 @@ Story content is never included in email logs for privacy protection.
         });
       }
     } catch (error) {
+      console.error('🔥 Email send error caught:', error);
+
       console.error({
         timestamp: new Date().toISOString(),
         level: 'ERROR',
@@ -198,8 +206,188 @@ Story content is never included in email logs for privacy protection.
     return `${localPart.substring(0, 3)}***@${domain}`;
   }
 
+  async sendInvitation(
+    recipientEmail: string,
+    inviterEmail: string,
+    role: string,
+    token: string
+  ): Promise<void> {
+    const env = getEnv();
+    const invitationLink = `${env.FRONTEND_MANAGER_URL}/accept-invitation?token=${token}`;
+    const roleDisplay = role === 'ADMIN' ? 'Admin' : 'Manager';
+
+    const subject = `You've been invited to join Story Manager as ${roleDisplay}`;
+
+    const htmlContent = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 30px;
+      border-radius: 8px 8px 0 0;
+      text-align: center;
+    }
+    .content {
+      background: #f9fafb;
+      padding: 30px;
+      border: 1px solid #e5e7eb;
+      border-top: none;
+    }
+    .info-box {
+      background: white;
+      padding: 20px;
+      border-left: 4px solid #667eea;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+    .footer {
+      background: #f3f4f6;
+      padding: 20px;
+      border-radius: 0 0 8px 8px;
+      text-align: center;
+      font-size: 12px;
+      color: #6b7280;
+    }
+    .button {
+      display: inline-block;
+      background: #667eea;
+      color: white;
+      padding: 14px 40px;
+      text-decoration: none;
+      border-radius: 6px;
+      margin: 20px 0;
+      font-weight: 600;
+      font-size: 16px;
+    }
+    .role-badge {
+      display: inline-block;
+      background: #10b981;
+      color: white;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .warning {
+      background: #fef3c7;
+      border-left: 4px solid #f59e0b;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1 style="margin: 0;">🎉 You're Invited!</h1>
+    <p style="margin: 10px 0 0 0; opacity: 0.9;">Story Manager Platform</p>
+  </div>
+  
+  <div class="content">
+    <p>Hello,</p>
+    <p><strong>${this.escapeHtml(inviterEmail)}</strong> has invited you to join the Story Manager platform.</p>
+    
+    <div class="info-box">
+      <p style="margin: 0;"><strong>Your Role:</strong> <span class="role-badge">${roleDisplay}</span></p>
+      <p style="margin: 10px 0 0 0; color: #6b7280; font-size: 14px;">
+        ${role === 'ADMIN' 
+          ? 'As an Admin, you will have full access to view, manage, and export stories, as well as invite other managers.' 
+          : 'As a Manager, you will be able to view stories and add notes.'}
+      </p>
+    </div>
+    
+    <p>Click the button below to accept the invitation and set your password:</p>
+    
+    <div style="text-align: center;">
+      <a href="${invitationLink}" class="button">
+        Accept Invitation
+      </a>
+    </div>
+    
+    <div class="warning">
+      <strong>⏰ Important:</strong> This invitation expires in 48 hours.
+    </div>
+    
+    <p style="font-size: 14px; color: #6b7280;">
+      If the button doesn't work, copy and paste this link into your browser:<br>
+      <a href="${invitationLink}" style="color: #667eea; word-break: break-all;">${invitationLink}</a>
+    </p>
+  </div>
+  
+  <div class="footer">
+    <p>This invitation was sent to ${this.escapeHtml(recipientEmail)}</p>
+    <p>If you didn't expect this invitation, you can safely ignore this email.</p>
+  </div>
+</body>
+</html>
+    `;
+
+    const textContent = `
+You're Invited to Story Manager!
+
+${inviterEmail} has invited you to join the Story Manager platform as ${roleDisplay}.
+
+${role === 'ADMIN' 
+  ? 'As an Admin, you will have full access to view, manage, and export stories, as well as invite other managers.' 
+  : 'As a Manager, you will be able to view stories and add notes.'}
+
+Click the link below to accept the invitation and set your password:
+${invitationLink}
+
+IMPORTANT: This invitation expires in 48 hours.
+
+---
+This invitation was sent to ${recipientEmail}
+If you didn't expect this invitation, you can safely ignore this email.
+    `;
+
+    try {
+      await this.transporter.sendMail({
+        from: env.GMAIL_USER,
+        to: recipientEmail,
+        subject: subject,
+        text: textContent,
+        html: htmlContent,
+      });
+
+      console.log({
+        timestamp: new Date().toISOString(),
+        level: 'INFO',
+        message: 'Invitation email sent',
+        context: {
+          recipient: this.maskEmail(recipientEmail),
+          inviter: this.maskEmail(inviterEmail),
+          role,
+        },
+      });
+    } catch (error) {
+      console.error({
+        timestamp: new Date().toISOString(),
+        level: 'ERROR',
+        message: 'Failed to send invitation email',
+        error: error instanceof Error ? error.message : 'Unknown error',
+        context: {
+          recipient: this.maskEmail(recipientEmail),
+        },
+      });
+      throw error;
+    }
+  }
+
   async close(): Promise<void> {
-    await this.client.close();
+    await this.transporter.close();
   }
 }
-

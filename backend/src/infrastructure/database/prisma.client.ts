@@ -1,9 +1,11 @@
-import { PrismaClient } from '@prisma/client';
+// @ts-ignore: npm module
+import pkg from 'npm:@prisma/client@5.22.0';
+const { PrismaClient } = pkg;
 import { getEnv } from '../../config/env.ts';
 
-let prismaInstance: PrismaClient | null = null;
+let prismaInstance: any = null;
 
-export function getPrismaClient(): PrismaClient {
+export function getPrismaClient() {
   if (!prismaInstance) {
     const env = getEnv();
     
@@ -29,4 +31,3 @@ export async function disconnectPrisma(): Promise<void> {
     console.log('👋 Prisma Client disconnected');
   }
 }
-

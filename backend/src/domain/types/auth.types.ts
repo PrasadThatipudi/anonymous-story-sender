@@ -15,6 +15,7 @@ export interface AuthResponse {
   manager: {
     id: string;
     email: string;
+    role: string;
   };
 }
 

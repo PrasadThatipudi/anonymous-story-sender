@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { authStore } from '../contexts/AuthContext';
+import { ManagerRole } from '../types/manager.types';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api';
 
@@ -38,13 +39,29 @@ export interface LoginResponse {
   manager: {
     id: string;
     email: string;
+    role: ManagerRole;
   };
 }
 
 export interface ManagerProfile {
   id: string;
   email: string;
+  role: ManagerRole;
   createdAt: string;
+}
+
+export interface AcceptInvitationRequest {
+  token: string;
+  password: string;
+}
+
+export interface AcceptInvitationResponse {
+  token: string;
+  manager: {
+    id: string;
+    email: string;
+    role: ManagerRole;
+  };
 }
 
 export const login = async (credentials: LoginRequest): Promise<LoginResponse> => {
@@ -65,6 +82,11 @@ export const logout = async (): Promise<void> => {
 
 export const getProfile = async (): Promise<ManagerProfile> => {
   const response = await apiClient.get<ManagerProfile>('/auth/me');
+  return response.data;
+};
+
+export const acceptInvitation = async (data: AcceptInvitationRequest): Promise<AcceptInvitationResponse> => {
+  const response = await axios.post<AcceptInvitationResponse>(`${API_BASE_URL}/auth/accept-invitation`, data);
   return response.data;
 };
 

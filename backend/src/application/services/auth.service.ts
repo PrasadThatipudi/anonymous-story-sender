@@ -1,14 +1,17 @@
-import * as bcrypt from 'bcrypt';
+import bcrypt from 'bcrypt';
 import { create, verify, getNumericDate } from 'djwt';
 import { ManagerRepository } from '../../infrastructure/database/repositories/manager.repository.ts';
+import { InvitationRepository } from '../../infrastructure/database/repositories/invitation.repository.ts';
 import { LoginCredentials, JWTPayload, AuthResponse } from '../../domain/types/auth.types.ts';
-import { CreateManagerInput } from '../../domain/entities/manager.entity.ts';
 import { getEnv } from '../../config/env.ts';
 
 const BCRYPT_ROUNDS = 10;
 
 export class AuthService {
-  constructor(private readonly managerRepo: ManagerRepository) {}
+  constructor(
+    private readonly managerRepo: ManagerRepository,
+    private readonly invitationRepo?: InvitationRepository
+  ) {}
 
   private async getJWTKey(): Promise<CryptoKey> {
     const env = getEnv();
@@ -24,7 +27,7 @@ export class AuthService {
   }
 
   async hashPassword(password: string): Promise<string> {
-    return await bcrypt.hash(password, BCRYPT_ROUNDS);
+    return await bcrypt.hash(password, BCRYPT_ROUNDS as any);
   }
 
   async comparePassword(password: string, hash: string): Promise<boolean> {
@@ -94,32 +97,68 @@ export class AuthService {
       manager: {
         id: manager.id,
         email: manager.email,
+        role: manager.role,
       },
     };
   }
 
-  async createManager(data: CreateManagerInput): Promise<void> {
-    const exists = await this.managerRepo.emailExists(data.email);
-
-    if (exists) {
-      throw new Error('Manager with this email already exists');
+  async acceptInvitation(token: string, password: string): Promise<AuthResponse> {
+    if (!this.invitationRepo) {
+      throw new Error('Invitation repository not configured');
     }
 
-    const hashedPassword = await this.hashPassword(data.password);
+    const invitation = await this.invitationRepo.findByToken(token);
 
-    await this.managerRepo.create({
-      email: data.email,
+    if (!invitation) {
+      throw new Error('Invalid or expired invitation');
+    }
+
+    if (invitation.used) {
+      throw new Error('Invitation has already been used');
+    }
+
+    const now = new Date();
+    if (invitation.expiresAt < now) {
+      throw new Error('Invitation has expired');
+    }
+
+    const emailExists = await this.managerRepo.emailExists(invitation.email);
+    if (emailExists) {
+      throw new Error('An account with this email already exists');
+    }
+
+    const hashedPassword = await this.hashPassword(password);
+
+    const manager = await this.managerRepo.create({
+      email: invitation.email,
       password: hashedPassword,
+      role: invitation.role,
     });
+
+    await this.invitationRepo.markAsUsed(invitation.id);
+
+    const jwtToken = await this.generateToken(manager.id, manager.email);
 
     console.log({
       timestamp: new Date().toISOString(),
       level: 'AUDIT',
-      message: 'Manager account created',
+      message: 'Manager account created via invitation',
       context: {
-        email: this.maskEmail(data.email),
+        managerId: manager.id,
+        email: this.maskEmail(manager.email),
+        role: manager.role,
+        invitedBy: this.maskEmail(invitation.createdBy.email),
       },
     });
+
+    return {
+      token: jwtToken,
+      manager: {
+        id: manager.id,
+        email: manager.email,
+        role: manager.role,
+      },
+    };
   }
 
   async getManagerById(id: string) {

@@ -5,6 +5,9 @@ import { useAuth } from '../contexts/AuthContext';
 import { StoryCard } from './StoryCard';
 import { StoryModal } from './StoryModal';
 import { ExportButton } from './ExportButton';
+import { InviteManagerModal } from './InviteManagerModal';
+import { InvitationsList } from './InvitationsList';
+import { ManagersList } from './ManagersList';
 import { Story, StoryStatus } from '../types/story.types';
 
 export const Dashboard: React.FC = () => {
@@ -12,8 +15,10 @@ export const Dashboard: React.FC = () => {
   const [statusFilter, setStatusFilter] = useState<StoryStatus | ''>('');
   const [search, setSearch] = useState('');
   const [selectedStory, setSelectedStory] = useState<Story | null>(null);
+  const [showInviteModal, setShowInviteModal] = useState(false);
+  const [teamTab, setTeamTab] = useState<'invitations' | 'managers'>('invitations');
 
-  const { manager } = useAuth();
+  const { manager, isAdmin } = useAuth();
   const { mutate: logout } = useLogout();
   const { data: stats } = useStats();
   const { data, isLoading, error } = useStories({
@@ -96,9 +101,50 @@ export const Dashboard: React.FC = () => {
               <option value={StoryStatus.FLAGGED}>FLAGGED</option>
             </select>
 
-            <ExportButton />
+            {isAdmin && <ExportButton />}
           </div>
         </div>
+
+        {isAdmin && (
+          <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-xl font-bold text-gray-900">Team Management</h2>
+              <button
+                onClick={() => setShowInviteModal(true)}
+                className="px-4 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg font-semibold hover:from-purple-700 hover:to-indigo-700 transition-colors"
+              >
+                Invite Manager
+              </button>
+            </div>
+
+            <div className="border-b border-gray-200 mb-6">
+              <div className="flex gap-4">
+                <button
+                  onClick={() => setTeamTab('invitations')}
+                  className={`pb-3 px-1 border-b-2 font-medium transition-colors ${
+                    teamTab === 'invitations'
+                      ? 'border-purple-600 text-purple-600'
+                      : 'border-transparent text-gray-500 hover:text-gray-700'
+                  }`}
+                >
+                  Pending Invitations
+                </button>
+                <button
+                  onClick={() => setTeamTab('managers')}
+                  className={`pb-3 px-1 border-b-2 font-medium transition-colors ${
+                    teamTab === 'managers'
+                      ? 'border-purple-600 text-purple-600'
+                      : 'border-transparent text-gray-500 hover:text-gray-700'
+                  }`}
+                >
+                  All Managers
+                </button>
+              </div>
+            </div>
+
+            {teamTab === 'invitations' ? <InvitationsList /> : <ManagersList />}
+          </div>
+        )}
 
         {isLoading && (
           <div className="text-center py-12">
@@ -164,6 +210,10 @@ export const Dashboard: React.FC = () => {
           isOpen={!!selectedStory}
           onClose={() => setSelectedStory(null)}
         />
+      )}
+
+      {isAdmin && (
+        <InviteManagerModal isOpen={showInviteModal} onClose={() => setShowInviteModal(false)} />
       )}
     </div>
   );

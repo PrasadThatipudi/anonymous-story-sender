@@ -10,6 +10,9 @@ const envSchema = z.object({
   CORS_ORIGINS: z.string().min(1, 'CORS_ORIGINS is required'),
   PORT: z.string().default('8000'),
   DENO_ENV: z.enum(['development', 'production', 'test']).default('development'),
+  BOOTSTRAP_ADMIN_EMAIL: z.string().email('Valid BOOTSTRAP_ADMIN_EMAIL is required'),
+  BOOTSTRAP_ADMIN_PASSWORD: z.string().min(8, 'BOOTSTRAP_ADMIN_PASSWORD must be at least 8 characters'),
+  FRONTEND_MANAGER_URL: z.string().url('Valid FRONTEND_MANAGER_URL is required'),
 });
 
 type Env = z.infer<typeof envSchema>;
@@ -32,6 +35,9 @@ export function loadEnv(): Env {
       CORS_ORIGINS: Deno.env.get('CORS_ORIGINS'),
       PORT: Deno.env.get('PORT') || '8000',
       DENO_ENV: Deno.env.get('DENO_ENV') || 'development',
+      BOOTSTRAP_ADMIN_EMAIL: Deno.env.get('BOOTSTRAP_ADMIN_EMAIL'),
+      BOOTSTRAP_ADMIN_PASSWORD: Deno.env.get('BOOTSTRAP_ADMIN_PASSWORD'),
+      FRONTEND_MANAGER_URL: Deno.env.get('FRONTEND_MANAGER_URL'),
     };
 
     cachedEnv = envSchema.parse(env);

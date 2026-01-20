@@ -1,7 +1,16 @@
 {
   "version": "5",
   "specifiers": {
+    "npm:@prisma/client@5.22.0": "5.22.0_prisma@5.22.0",
     "npm:@prisma/client@^5.8.0": "5.22.0_prisma@5.22.0",
+    "npm:@prisma/engines@5.22.0": "5.22.0",
+    "npm:@types/nodemailer@6.4.16": "6.4.16",
+    "npm:bcryptjs@2.4.3": "2.4.3",
+    "npm:bcryptjs@^2.4.3": "2.4.3",
+    "npm:nodemailer@6.9.16": "6.9.16",
+    "npm:nodemailer@^6.9.0": "6.10.1",
+    "npm:prisma@*": "5.22.0",
+    "npm:prisma@5.22.0": "5.22.0",
     "npm:prisma@^5.8.0": "5.22.0"
   },
   "npm": {
@@ -45,10 +54,31 @@
         "@prisma/debug"
       ]
     },
+    "@types/node@22.15.15": {
+      "integrity": "sha512-R5muMcZob3/Jjchn5LcO8jdKwSCbzqmPB6ruBxMcf9kbxtniZHP327s6C37iOfuw8mbKK3cAQa7sEl7afLrQ8A==",
+      "dependencies": [
+        "undici-types"
+      ]
+    },
+    "@types/nodemailer@6.4.16": {
+      "integrity": "sha512-uz6hN6Pp0upXMcilM61CoKyjT7sskBoOWpptkjjJp8jIMlTdc3xG01U7proKkXzruMS4hS0zqtHNkNPFB20rKQ==",
+      "dependencies": [
+        "@types/node"
+      ]
+    },
+    "bcryptjs@2.4.3": {
+      "integrity": "sha512-V/Hy/X9Vt7f3BbPJEi8BdVFMByHi+jNXrYkW3huaybV/kQ0KJg0Y6PkEMbn+zeT+i+SiKZ/HMqJGIIt4LZDqNQ=="
+    },
     "fsevents@2.3.3": {
       "integrity": "sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==",
       "os": ["darwin"],
       "scripts": true
+    },
+    "nodemailer@6.10.1": {
+      "integrity": "sha512-Z+iLaBGVaSjbIzQ4pX6XV41HrooLsQ10ZWPUehGmuantvzWoDVBnmsdUcOIDM1t+yPor5pDhVlDESgOMEGxhHA=="
+    },
+    "nodemailer@6.9.16": {
+      "integrity": "sha512-psAuZdTIRN08HKVd/E8ObdV6NO7NTBY3KsC30F7M4H1OnmLCUNaS56FpYxyb26zWLSyYF9Ozch9KYHhHegsiOQ=="
     },
     "prisma@5.22.0": {
       "integrity": "sha512-vtpjW3XuYCSnMsNVBjLMNkTj6OZbudcPPTPYHqX0CJfpcdWciI1dM8uHETwmDxxiqEwCIE6WvXucWUetJgfu/A==",
@@ -60,6 +90,9 @@
       ],
       "scripts": true,
       "bin": true
+    },
+    "undici-types@6.21.0": {
+      "integrity": "sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ=="
     }
   },
   "remote": {
@@ -75,6 +108,7 @@
     "https://deno.land/x/bcrypt@v0.4.1/src/bcrypt/base64.ts": "b8266450a4f1eb6960f60f2f7986afc4dde6b45bd2d7ee7ba10789e67e17b9f7",
     "https://deno.land/x/bcrypt@v0.4.1/src/bcrypt/bcrypt.ts": "ec221648cc6453ea5e3803bc817c01157dada06aa6f7a0ba6b9f87aae32b21e2",
     "https://deno.land/x/bcrypt@v0.4.1/src/main.ts": "08d201b289c8d9c46f8839c69cd6625b213863db29775c7a200afc3b540e64f8",
+    "https://deno.land/x/bcrypt@v0.4.1/src/worker.ts": "5a73bdfee9c9e622f47c9733d374b627dce52fb3ec1e74c8226698b3fc57ffac",
     "https://deno.land/x/djwt@v3.0.1/algorithm.ts": "b1c6645f9dbd6e6c47c123a3b18c28b956f91c65ed17f5b6d5d968fc3750542b",
     "https://deno.land/x/djwt@v3.0.1/deps.ts": "c8b329dc18c54f93879699ffb728bd805d548f7c64c4d2916efa5fb2c712cc47",
     "https://deno.land/x/djwt@v3.0.1/mod.ts": "eca176976595654b8a536e7b8029a029c435d079ef58feff2d3bde33ea107417",
@@ -82,6 +116,7 @@
     "https://deno.land/x/djwt@v3.0.1/util.ts": "5cb264d2125c553678e11446bcfa0494025d120e3f59d0a3ab38f6800def697d",
     "https://deno.land/x/hono@v4.0.10/client/client.ts": "9aa632e0df3bb1e10081a29577117c92b65f27252c56d2474ddba2113f584848",
     "https://deno.land/x/hono@v4.0.10/client/index.ts": "30def535310a37bede261f1b23d11a9758983b8e9d60a6c56309cee5f6746ab2",
+    "https://deno.land/x/hono@v4.0.10/client/types.ts": "3c00a7ec75de1eb798260796e02a90fc8850aef023a5787467a5eb8c9fc7c297",
     "https://deno.land/x/hono@v4.0.10/client/utils.ts": "b61b11614aa976e4b6f829642528bd78bf8d19a72aa57426e40eb21507a69c0a",
     "https://deno.land/x/hono@v4.0.10/compose.ts": "37d6e33b7db80e4c43a0629b12fd3a1e3406e7d9e62a4bfad4b30426ea7ae4f1",
     "https://deno.land/x/hono@v4.0.10/context.ts": "2c6b270ca580a46335d04bb5aac39ac13d00e7e4910f54deba446c0a93f0401f",
@@ -105,15 +140,19 @@
     "https://deno.land/x/hono@v4.0.10/router/trie-router/index.ts": "3eb75e7f71ba81801631b30de6b1f5cefb2c7239c03797e2b2cbab5085911b41",
     "https://deno.land/x/hono@v4.0.10/router/trie-router/node.ts": "04d2eac912cc367b95545ce10d889134fc37be74ca729a7f0772970f37b29d11",
     "https://deno.land/x/hono@v4.0.10/router/trie-router/router.ts": "54ced78d35676302c8fcdda4204f7bdf5a7cc907fbf9967c75674b1e394f830d",
+    "https://deno.land/x/hono@v4.0.10/types.ts": "6fa40ae360b4f0e348faff4066adf2cd7e8165dea5b48b7fc41044c324b59596",
     "https://deno.land/x/hono@v4.0.10/utils/body.ts": "1c7013f83bbef8216b3d862111efd5a183eaa29e86decf9a7eec6cdf25757e93",
     "https://deno.land/x/hono@v4.0.10/utils/buffer.ts": "9066a973e64498cb262c7e932f47eed525a51677b17f90893862b7279dc0773e",
     "https://deno.land/x/hono@v4.0.10/utils/cookie.ts": "a8d61878bc6eb338d17758e2b5b47512ac1ced8d824fd4ff7b637b091cc7b28f",
     "https://deno.land/x/hono@v4.0.10/utils/crypto.ts": "bda0e141bbe46d3a4a20f8fbcb6380d473b617123d9fdfa93e4499410b537acc",
     "https://deno.land/x/hono@v4.0.10/utils/html.ts": "6ea4f6bf41587a51607dff7a6d2865ef4d5001e4203b07e5c8a45b63a098e871",
+    "https://deno.land/x/hono@v4.0.10/utils/http-status.ts": "f5b820f2793e45209f34deddf147b23e3133a89eb4c57dc643759a504706636b",
+    "https://deno.land/x/hono@v4.0.10/utils/types.ts": "47426b7de99a75aa39305a21868c8d8e8d1316d24136a2d35fdf24e15f72970c",
     "https://deno.land/x/hono@v4.0.10/utils/url.ts": "d9d307a495e7dfc6e916fbcfa74c2d8d23e8e685bddc5e6ebc9c0f784345a01a",
     "https://deno.land/x/hono@v4.0.10/validator/index.ts": "6c986e8b91dcf857ecc8164a506ae8eea8665792a4ff7215471df669c632ae7c",
     "https://deno.land/x/hono@v4.0.10/validator/validator.ts": "d80db93f84bce6406feac5d157cb97ee69242498d0dbec4568cb5df1a844bf0f",
     "https://deno.land/x/smtp@v0.7.0/code.ts": "f388fae4995b4d35d99fb6b8bfded522f5a3e7e7d63babdf318a059d6db43baf",
+    "https://deno.land/x/smtp@v0.7.0/config.ts": "683a6fa684e5ef3705e809b203abea7804a90afde7b534d66c182ea3d17902d3",
     "https://deno.land/x/smtp@v0.7.0/deps.ts": "5e2a437e3ae35f0e83719fd2e707858dcb750c1111ff5bebc729522a1380b53d",
     "https://deno.land/x/smtp@v0.7.0/mod.ts": "9b0d8fbdacc184d1af10f727980e51486e0ddf9d2ec7227c8dfce90db5bfbcf5",
     "https://deno.land/x/smtp@v0.7.0/smtp.ts": "47c72a99925ad07f3174037f9325dbb8b703dc1177277b9161dc6209c7fa4f90",
@@ -134,7 +173,19 @@
   "workspace": {
     "dependencies": [
       "npm:@prisma/client@^5.8.0",
+      "npm:bcryptjs@^2.4.3",
+      "npm:nodemailer@^6.9.0",
       "npm:prisma@^5.8.0"
-    ]
+    ],
+    "packageJson": {
+      "dependencies": [
+        "npm:@prisma/client@5.22.0",
+        "npm:@prisma/engines@5.22.0",
+        "npm:@types/nodemailer@6.4.16",
+        "npm:bcryptjs@2.4.3",
+        "npm:nodemailer@6.9.16",
+        "npm:prisma@5.22.0"
+      ]
+    }
   }
 }

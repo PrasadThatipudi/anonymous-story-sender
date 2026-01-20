@@ -10,13 +10,26 @@ async function seed() {
   const env = getEnv();
 
   try {
-    const managerCount = await prisma.manager.count();
+    const hashedPassword = await bcrypt.hash(env.BOOTSTRAP_ADMIN_PASSWORD, BCRYPT_ROUNDS as any);
 
-    if (managerCount === 0) {
-      console.log('No managers found. Creating bootstrap admin...');
+    // Check if manager with bootstrap email exists
+    const existingManager = await prisma.manager.findUnique({
+      where: { email: env.BOOTSTRAP_ADMIN_EMAIL },
+    });
 
-      const hashedPassword = await bcrypt.hash(env.BOOTSTRAP_ADMIN_PASSWORD, BCRYPT_ROUNDS as any);
-
+    if (existingManager) {
+      // Update existing manager to ADMIN
+      const updated = await prisma.manager.update({
+        where: { email: env.BOOTSTRAP_ADMIN_EMAIL },
+        data: {
+          role: 'ADMIN',
+          password: hashedPassword,
+        },
+      });
+      console.log(`✅ Manager ${updated.email} updated to ADMIN role!`);
+      console.log(`🔑 Role: ${updated.role}`);
+    } else {
+      // Create new admin (original behavior)
       const admin = await prisma.manager.create({
         data: {
           email: env.BOOTSTRAP_ADMIN_EMAIL,
@@ -24,12 +37,9 @@ async function seed() {
           role: 'ADMIN',
         },
       });
-
       console.log(`✅ Bootstrap admin created successfully!`);
       console.log(`📧 Email: ${admin.email}`);
       console.log(`🔑 Role: ${admin.role}`);
-    } else {
-      console.log(`ℹ️  Managers already exist (${managerCount}). Skipping bootstrap admin creation.`);
     }
   } catch (error) {
     console.error('❌ Error during seed:', error instanceof Error ? error.message : error);

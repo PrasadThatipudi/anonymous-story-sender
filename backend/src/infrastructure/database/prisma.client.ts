@@ -14,9 +14,6 @@ export function getPrismaClient() {
         },
       },
       log: env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
-      // Required for Deno Deploy edge runtime
-      // @ts-ignore - engineType is valid but not in types
-      engineType: 'library',
     });
 
     console.log('✅ Prisma Client initialized');

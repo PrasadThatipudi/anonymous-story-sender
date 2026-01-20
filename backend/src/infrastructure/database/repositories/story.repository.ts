@@ -1,6 +1,3 @@
-// @ts-ignore: npm module  
-import pkg from 'npm:@prisma/client@5.22.0';
-const { PrismaClient } = pkg;
 import { StoryEntity, CreateStoryInput, UpdateStoryInput } from '../../../domain/entities/story.entity.ts';
 import { StoryStatus } from '../../../domain/enums/story-status.enum.ts';
 import { StoryListFilter, StoryStats } from '../../../domain/types/story.types.ts';

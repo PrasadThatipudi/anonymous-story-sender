@@ -1,6 +1,3 @@
-// @ts-ignore: npm module
-import pkg from 'npm:@prisma/client@5.22.0';
-const { PrismaClient } = pkg;
 import { ManagerEntity, CreateManagerInput } from '../../../domain/entities/manager.entity.ts';
 import { ManagerRole } from '../../../domain/enums/manager-role.enum.ts';
 

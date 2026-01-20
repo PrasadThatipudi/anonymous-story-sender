@@ -6,7 +6,6 @@ const envSchema = z.object({
   JWT_EXPIRY: z.string().default('24h'),
   GMAIL_USER: z.string().email('Valid GMAIL_USER email is required'),
   GMAIL_APP_PASSWORD: z.string().min(16, 'GMAIL_APP_PASSWORD must be at least 16 characters'),
-  MANAGER_EMAILS: z.string().min(1, 'At least one MANAGER_EMAILS is required'),
   CORS_ORIGINS: z.string().min(1, 'CORS_ORIGINS is required'),
   PORT: z.string().default('8000'),
   DENO_ENV: z.enum(['development', 'production', 'test']).default('development'),
@@ -31,7 +30,6 @@ export function loadEnv(): Env {
       JWT_EXPIRY: Deno.env.get('JWT_EXPIRY') || '24h',
       GMAIL_USER: Deno.env.get('GMAIL_USER'),
       GMAIL_APP_PASSWORD: Deno.env.get('GMAIL_APP_PASSWORD'),
-      MANAGER_EMAILS: Deno.env.get('MANAGER_EMAILS'),
       CORS_ORIGINS: Deno.env.get('CORS_ORIGINS'),
       PORT: Deno.env.get('PORT') || '8000',
       DENO_ENV: Deno.env.get('DENO_ENV') || 'development',
@@ -59,11 +57,6 @@ export function getEnv(): Env {
     throw new Error('Environment not loaded. Call loadEnv() first.');
   }
   return cachedEnv;
-}
-
-export function getManagerEmails(): string[] {
-  const env = getEnv();
-  return env.MANAGER_EMAILS.split(',').map((email) => email.trim());
 }
 
 export function getCorsOrigins(): string[] {

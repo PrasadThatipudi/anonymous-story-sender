@@ -55,4 +55,11 @@ export class ManagerRepository {
   async count(): Promise<number> {
     return await this.prisma.manager.count();
   }
+
+  async findAllEmails(): Promise<string[]> {
+    const managers = await this.prisma.manager.findMany({
+      select: { email: true },
+    });
+    return managers.map((m: { email: string }) => m.email);
+  }
 }

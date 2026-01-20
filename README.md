@@ -179,7 +179,6 @@ JWT_SECRET=your_jwt_secret_min_32_chars
 JWT_EXPIRY=24h
 GMAIL_USER=your_gmail@gmail.com
 GMAIL_APP_PASSWORD=your_16_char_app_password
-MANAGER_EMAILS=admin@example.com
 CORS_ORIGINS=http://localhost:5173,http://localhost:5174
 PORT=8000
 DENO_ENV=development

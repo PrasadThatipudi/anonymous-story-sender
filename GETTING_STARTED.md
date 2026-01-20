@@ -36,8 +36,7 @@ DATABASE_URL=your_neon_connection_string_here
 GMAIL_USER=your_email@gmail.com
 GMAIL_APP_PASSWORD=your_16_char_app_password
 
-# Manager Configuration
-MANAGER_EMAILS=your_email@example.com
+# CORS Configuration
 CORS_ORIGINS=http://localhost:5173,http://localhost:5174
 
 # JWT Security

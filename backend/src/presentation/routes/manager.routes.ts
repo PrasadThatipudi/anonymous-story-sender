@@ -29,7 +29,8 @@ managerRoutes.get('/stories', async (c) => {
 
   const prisma = getPrismaClient();
   const storyRepo = new StoryRepository(prisma);
-  const emailService = new EmailService();
+  const managerRepo = new ManagerRepository(prisma);
+  const emailService = new EmailService(managerRepo);
   const storyService = new StoryService(storyRepo, emailService);
 
   const result = await storyService.getStories(filter);
@@ -42,7 +43,8 @@ managerRoutes.get('/stories/:id', async (c) => {
 
   const prisma = getPrismaClient();
   const storyRepo = new StoryRepository(prisma);
-  const emailService = new EmailService();
+  const managerRepo = new ManagerRepository(prisma);
+  const emailService = new EmailService(managerRepo);
   const storyService = new StoryService(storyRepo, emailService);
 
   const story = await storyService.getStoryById(id);
@@ -58,7 +60,8 @@ managerRoutes.patch('/stories/:id', requireStoryWrite, async (c) => {
 
   const prisma = getPrismaClient();
   const storyRepo = new StoryRepository(prisma);
-  const emailService = new EmailService();
+  const managerRepo = new ManagerRepository(prisma);
+  const emailService = new EmailService(managerRepo);
   const storyService = new StoryService(storyRepo, emailService);
 
   const story = await storyService.updateStory(id, data, managerId);
@@ -72,7 +75,8 @@ managerRoutes.delete('/stories/:id', requireStoryWrite, async (c) => {
 
   const prisma = getPrismaClient();
   const storyRepo = new StoryRepository(prisma);
-  const emailService = new EmailService();
+  const managerRepo = new ManagerRepository(prisma);
+  const emailService = new EmailService(managerRepo);
   const storyService = new StoryService(storyRepo, emailService);
 
   await storyService.deleteStory(id, managerId);
@@ -86,7 +90,8 @@ managerRoutes.get('/stories/export', requireStoryExport, async (c) => {
 
   const prisma = getPrismaClient();
   const storyRepo = new StoryRepository(prisma);
-  const emailService = new EmailService();
+  const managerRepo = new ManagerRepository(prisma);
+  const emailService = new EmailService(managerRepo);
   const storyService = new StoryService(storyRepo, emailService);
 
   const data = await storyService.exportStories(filter);
@@ -103,7 +108,8 @@ managerRoutes.get('/stories/export', requireStoryExport, async (c) => {
 managerRoutes.get('/stats', async (c) => {
   const prisma = getPrismaClient();
   const storyRepo = new StoryRepository(prisma);
-  const emailService = new EmailService();
+  const managerRepo = new ManagerRepository(prisma);
+  const emailService = new EmailService(managerRepo);
   const storyService = new StoryService(storyRepo, emailService);
 
   const stats = await storyService.getStats();
@@ -120,7 +126,7 @@ managerRoutes.post('/invitations', requireAdmin, invitationRateLimiter, async (c
     const prisma = getPrismaClient();
     const invitationRepo = new InvitationRepository(prisma);
     const managerRepo = new ManagerRepository(prisma);
-    const emailClient = new GmailClient();
+    const emailClient = new GmailClient(managerRepo);
     const managerService = new ManagerService(invitationRepo, managerRepo, emailClient);
 
     const invitation = await managerService.createInvitation(data, managerId);
@@ -143,7 +149,7 @@ managerRoutes.get('/invitations', requireAdmin, async (c) => {
   const prisma = getPrismaClient();
   const invitationRepo = new InvitationRepository(prisma);
   const managerRepo = new ManagerRepository(prisma);
-  const emailClient = new GmailClient();
+  const emailClient = new GmailClient(managerRepo);
   const managerService = new ManagerService(invitationRepo, managerRepo, emailClient);
 
   const result = await managerService.listInvitations(filter.page, filter.limit);
@@ -158,7 +164,7 @@ managerRoutes.delete('/invitations/:id', requireAdmin, async (c) => {
   const prisma = getPrismaClient();
   const invitationRepo = new InvitationRepository(prisma);
   const managerRepo = new ManagerRepository(prisma);
-  const emailClient = new GmailClient();
+  const emailClient = new GmailClient(managerRepo);
   const managerService = new ManagerService(invitationRepo, managerRepo, emailClient);
 
   await managerService.revokeInvitation(id, managerId);
@@ -174,7 +180,7 @@ managerRoutes.get('/managers', requireAdmin, async (c) => {
   const prisma = getPrismaClient();
   const invitationRepo = new InvitationRepository(prisma);
   const managerRepo = new ManagerRepository(prisma);
-  const emailClient = new GmailClient();
+  const emailClient = new GmailClient(managerRepo);
   const managerService = new ManagerService(invitationRepo, managerRepo, emailClient);
 
   const result = await managerService.listManagers(page, limit);

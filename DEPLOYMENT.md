@@ -61,7 +61,6 @@ Add to your `.env`:
 ```bash
 GMAIL_USER="your-email@gmail.com"
 GMAIL_APP_PASSWORD="your-16-char-app-password"
-MANAGER_EMAILS="manager1@example.com,manager2@example.com"
 ```
 
 ## Step 3: Deploy Backend to Deno Deploy
@@ -89,7 +88,9 @@ git push -u origin main
    - `JWT_EXPIRY` = "24h"
    - `GMAIL_USER`
    - `GMAIL_APP_PASSWORD`
-   - `MANAGER_EMAILS`
+   - `BOOTSTRAP_ADMIN_EMAIL`
+   - `BOOTSTRAP_ADMIN_PASSWORD`
+   - `FRONTEND_MANAGER_URL` (will update after frontend deployment)
    - `CORS_ORIGINS` (will update after frontend deployment)
    - `PORT` = "8000"
    - `DENO_ENV` = "production"
@@ -224,7 +225,7 @@ For higher traffic:
 
 **Problem**: Email not sending
 - Verify Gmail App Password is correct
-- Check MANAGER_EMAILS format
+- Check that managers exist in the database
 - Review logs for SMTP errors
 
 ### Frontend Issues

@@ -1,10 +1,13 @@
 import nodemailer from 'nodemailer';
-import { getEnv, getManagerEmails } from '../../config/env.ts';
+import { getEnv } from '../../config/env.ts';
+import type { ManagerRepository } from '../database/repositories/manager.repository.ts';
 
 export class GmailClient {
   private transporter: any;
+  private managerRepository: ManagerRepository;
 
-  constructor() {
+  constructor(managerRepository: ManagerRepository) {
+    this.managerRepository = managerRepository;
     const env = getEnv();
     
     console.log('🔥 GmailClient constructor entry - using NODEMAILER');
@@ -22,7 +25,7 @@ export class GmailClient {
 
   async sendNewStoryNotification(storyId: string, contentPreview: string): Promise<void> {
     const env = getEnv();
-    const managerEmails = getManagerEmails();
+    const managerEmails = await this.managerRepository.findAllEmails();
     const timestamp = new Date().toISOString();
 
     console.log('🔥 sendNewStoryNotification entry');

@@ -1,10 +1,11 @@
 import { GmailClient } from '../../infrastructure/email/gmail.client.ts';
+import type { ManagerRepository } from '../../infrastructure/database/repositories/manager.repository.ts';
 
 export class EmailService {
   private gmailClient: GmailClient;
 
-  constructor() {
-    this.gmailClient = new GmailClient();
+  constructor(managerRepository: ManagerRepository) {
+    this.gmailClient = new GmailClient(managerRepository);
   }
 
   async sendStoryNotification(storyId: string, content: string): Promise<void> {

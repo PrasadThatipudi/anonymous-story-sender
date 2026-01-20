@@ -2,6 +2,7 @@ import { Hono } from 'hono';
 import { StoryService } from '../../application/services/story.service.ts';
 import { EmailService } from '../../application/services/email.service.ts';
 import { StoryRepository } from '../../infrastructure/database/repositories/story.repository.ts';
+import { ManagerRepository } from '../../infrastructure/database/repositories/manager.repository.ts';
 import { getPrismaClient } from '../../infrastructure/database/prisma.client.ts';
 import { CreateStorySchema } from '../../application/dto/story.dto.ts';
 import { storySubmissionRateLimiter } from '../middleware/rate-limit.middleware.ts';
@@ -14,7 +15,8 @@ storyRoutes.post('/', storySubmissionRateLimiter, async (c) => {
 
   const prisma = getPrismaClient();
   const storyRepo = new StoryRepository(prisma);
-  const emailService = new EmailService();
+  const managerRepo = new ManagerRepository(prisma);
+  const emailService = new EmailService(managerRepo);
   const storyService = new StoryService(storyRepo, emailService);
 
   const result = await storyService.submitStory(data);

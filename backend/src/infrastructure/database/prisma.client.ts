@@ -13,7 +13,7 @@ export function getPrismaClient() {
           url: env.DATABASE_URL,
         },
       },
-      log: env.DENO_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
+      log: env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
     });
 
     console.log('✅ Prisma Client initialized');

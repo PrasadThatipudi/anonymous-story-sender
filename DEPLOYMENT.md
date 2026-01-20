@@ -93,7 +93,7 @@ git push -u origin main
    - `FRONTEND_MANAGER_URL` (will update after frontend deployment)
    - `CORS_ORIGINS` (will update after frontend deployment)
    - `PORT` = "8000"
-   - `DENO_ENV` = "production"
+   - `NODE_ENV` = "production"
 
 6. Deploy!
 

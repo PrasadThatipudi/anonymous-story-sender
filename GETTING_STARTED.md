@@ -52,7 +52,7 @@ FRONTEND_MANAGER_URL=http://localhost:5174
 
 # Server
 PORT=8000
-DENO_ENV=development
+NODE_ENV=development
 ```
 
 > 💡 **Tip:** The bootstrap admin account is created automatically when you run migrations for the first time. Use these credentials to log in to the manager dashboard.

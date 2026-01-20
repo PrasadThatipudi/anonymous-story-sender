@@ -38,7 +38,7 @@ const env = getEnv();
 const port = parseInt(env.PORT, 10);
 
 console.log(`🚀 Server starting on port ${port}`);
-console.log(`📝 Environment: ${env.DENO_ENV}`);
+console.log(`📝 Environment: ${env.NODE_ENV}`);
 console.log(`🔗 API available at: http://localhost:${port}`);
 
 Deno.serve({ port }, app.fetch);

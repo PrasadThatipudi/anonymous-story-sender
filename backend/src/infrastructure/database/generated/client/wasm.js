@@ -126,6 +126,7 @@ exports.Prisma.ManagerScalarFieldEnum = {
   id: 'id',
   email: 'email',
   password: 'password',
+  role: 'role',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -136,6 +137,19 @@ exports.Prisma.StoryScalarFieldEnum = {
   status: 'status',
   notes: 'notes',
   submittedAt: 'submittedAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.InvitationScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  token: 'token',
+  role: 'role',
+  expiresAt: 'expiresAt',
+  used: 'used',
+  usedAt: 'usedAt',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
 
@@ -153,6 +167,11 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
+exports.ManagerRole = exports.$Enums.ManagerRole = {
+  ADMIN: 'ADMIN',
+  MANAGER: 'MANAGER'
+};
+
 exports.StoryStatus = exports.$Enums.StoryStatus = {
   NEW: 'NEW',
   READ: 'READ',
@@ -162,7 +181,8 @@ exports.StoryStatus = exports.$Enums.StoryStatus = {
 
 exports.Prisma.ModelName = {
   Manager: 'Manager',
-  Story: 'Story'
+  Story: 'Story',
+  Invitation: 'Invitation'
 };
 
 /**

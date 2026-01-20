@@ -9,6 +9,9 @@
 # Prisma
 **/prisma/generated/
 
+# Exception: Do NOT ignore the committed Prisma client for Deno Deploy
+!backend/src/infrastructure/database/generated/
+
 # Dependencies
 node_modules/
 npm-debug.log*

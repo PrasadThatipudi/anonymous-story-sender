@@ -13,6 +13,7 @@
     "zod": "https://deno.land/x/zod@v3.22.4/mod.ts",
     "bcrypt": "npm:bcryptjs@^2.4.3",
     "@prisma/client": "npm:@prisma/client@^5.8.0",
+    "@prisma/client/edge": "npm:@prisma/client@^5.8.0/edge",
     "@prisma/extension-accelerate": "npm:@prisma/extension-accelerate@^1.0.0",
     "prisma": "npm:prisma@^5.8.0",
     "djwt": "https://deno.land/x/djwt@v3.0.1/mod.ts",

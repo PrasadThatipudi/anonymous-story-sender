@@ -1,4 +1,6 @@
-import { PrismaClient } from './generated/client/deno/edge.ts';
+// @ts-ignore - npm module
+import pkg from 'npm:@prisma/client@5.22.0';
+const { PrismaClient } = pkg;
 import { withAccelerate } from '@prisma/extension-accelerate';
 import { getEnv } from '../../config/env.ts';
 

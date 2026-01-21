@@ -174,10 +174,6 @@ const config = {
         "fromEnvVar": null,
         "value": "darwin-arm64",
         "native": true
-      },
-      {
-        "fromEnvVar": null,
-        "value": "debian-openssl-3.0.x"
       }
     ],
     "previewFeatures": [],
@@ -204,8 +200,8 @@ const config = {
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider      = \"prisma-client-js\"\n  output        = \"../generated/client\"\n  engineType    = \"library\"\n  binaryTargets = [\"native\", \"debian-openssl-3.0.x\"]\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Manager {\n  id        String      @id @default(uuid())\n  email     String      @unique\n  password  String\n  role      ManagerRole @default(MANAGER)\n  createdAt DateTime    @default(now())\n  updatedAt DateTime    @updatedAt\n\n  invitations Invitation[]\n\n  @@map(\"managers\")\n}\n\nmodel Story {\n  id          String      @id @default(uuid())\n  content     String      @db.Text\n  status      StoryStatus @default(NEW)\n  notes       String?     @db.Text\n  submittedAt DateTime    @default(now())\n  updatedAt   DateTime    @updatedAt\n\n  @@index([status])\n  @@index([submittedAt])\n  @@map(\"stories\")\n}\n\nenum StoryStatus {\n  NEW\n  READ\n  ARCHIVED\n  FLAGGED\n}\n\nenum ManagerRole {\n  ADMIN\n  MANAGER\n}\n\nmodel Invitation {\n  id          String      @id @default(uuid())\n  email       String\n  token       String      @unique\n  role        ManagerRole\n  expiresAt   DateTime\n  used        Boolean     @default(false)\n  usedAt      DateTime?\n  createdById String\n  createdBy   Manager     @relation(fields: [createdById], references: [id], onDelete: Cascade)\n  createdAt   DateTime    @default(now())\n  updatedAt   DateTime    @updatedAt\n\n  @@index([email])\n  @@index([token])\n  @@index([used])\n  @@map(\"invitations\")\n}\n",
-  "inlineSchemaHash": "326626b3100485b1653d6a088eeeb85cf21ca30720307259fd5f922b04c23a33",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/client\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Manager {\n  id        String      @id @default(uuid())\n  email     String      @unique\n  password  String\n  role      ManagerRole @default(MANAGER)\n  createdAt DateTime    @default(now())\n  updatedAt DateTime    @updatedAt\n\n  invitations Invitation[]\n\n  @@map(\"managers\")\n}\n\nmodel Story {\n  id          String      @id @default(uuid())\n  content     String      @db.Text\n  status      StoryStatus @default(NEW)\n  notes       String?     @db.Text\n  submittedAt DateTime    @default(now())\n  updatedAt   DateTime    @updatedAt\n\n  @@index([status])\n  @@index([submittedAt])\n  @@map(\"stories\")\n}\n\nenum StoryStatus {\n  NEW\n  READ\n  ARCHIVED\n  FLAGGED\n}\n\nenum ManagerRole {\n  ADMIN\n  MANAGER\n}\n\nmodel Invitation {\n  id          String      @id @default(uuid())\n  email       String\n  token       String      @unique\n  role        ManagerRole\n  expiresAt   DateTime\n  used        Boolean     @default(false)\n  usedAt      DateTime?\n  createdById String\n  createdBy   Manager     @relation(fields: [createdById], references: [id], onDelete: Cascade)\n  createdAt   DateTime    @default(now())\n  updatedAt   DateTime    @updatedAt\n\n  @@index([email])\n  @@index([token])\n  @@index([used])\n  @@map(\"invitations\")\n}\n",
+  "inlineSchemaHash": "0b42e2b489c20d839dcf65102a6035d8ec4e83729c19526941a1580327c5e75d",
   "copyEngine": true
 }
 config.dirname = '/'

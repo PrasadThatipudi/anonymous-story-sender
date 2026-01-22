@@ -40,5 +40,5 @@
       ]
     }
   },
-  "nodeModulesDir": true
+  "nodeModulesDir": "auto"
 }

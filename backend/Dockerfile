@@ -16,6 +16,9 @@ RUN deno run -A npm:prisma@5.22.0 generate --schema=./src/infrastructure/databas
 # Copy rest of the application
 COPY . .
 
+# Make startup script executable
+RUN chmod +x start.sh
+
 # Cache the main application and its dependencies
 RUN deno cache src/main.ts
 
@@ -25,6 +28,6 @@ EXPOSE 8000
 # Set environment variable for port
 ENV PORT=8000
 
-# Run the application
-CMD ["deno", "run", "--allow-net", "--allow-env", "--allow-read", "--allow-ffi", "--allow-sys", "src/main.ts"]
+# Run the startup script (handles migrations + app startup)
+CMD ["sh", "start.sh"]
 

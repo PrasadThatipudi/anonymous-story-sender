@@ -1,5 +1,6 @@
-import { PrismaClient } from '@prisma/client/edge';
-import { withAccelerate } from '@prisma/extension-accelerate';
+// @ts-ignore - npm module
+import pkg from 'npm:@prisma/client@5.22.0';
+const { PrismaClient } = pkg;
 import { getEnv } from '../../config/env.ts';
 
 let prismaInstance: any = null;
@@ -8,19 +9,16 @@ export function getPrismaClient() {
   if (!prismaInstance) {
     const env = getEnv();
     
-    const client = new PrismaClient({
+    prismaInstance = new PrismaClient({
       datasources: {
         db: {
-          url: env.DATABASE_URL, // Accelerate URL
+          url: env.DATABASE_URL,
         },
       },
       log: env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
     });
 
-    // Extend with Accelerate for edge runtime support
-    prismaInstance = client.$extends(withAccelerate());
-
-    console.log('✅ Prisma Client initialized with Accelerate');
+    console.log('✅ Prisma Client initialized');
   }
 
   return prismaInstance;

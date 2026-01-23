@@ -12,18 +12,39 @@ export class GmailClient {
     
     console.log('🔥 GmailClient constructor entry - using NODEMAILER');
     
+    // Use explicit SMTP configuration for better reliability on cloud platforms
     this.transporter = nodemailer.createTransport({
-      service: 'gmail',
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false, // Use STARTTLS
       auth: {
         user: env.GMAIL_USER,
         pass: env.GMAIL_APP_PASSWORD,
       },
+      connectionTimeout: 10000,  // 10 seconds
+      greetingTimeout: 10000,    // 10 seconds  
+      socketTimeout: 30000,      // 30 seconds
+      logger: env.NODE_ENV === 'development',
+      debug: env.NODE_ENV === 'development',
     });
 
-    console.log('🔥 Transporter created');
+    console.log('🔥 Transporter created, verifying connection...');
+
+    // Verify SMTP connection on startup
+    this.verifyConnection().catch((error) => {
+      console.error('⚠️ SMTP verification failed:', error.message);
+      console.error('📧 Email notifications will be disabled - app continues running');
+      this.transporter = null;
+    });
   }
 
   async sendNewStoryNotification(storyId: string, contentPreview: string): Promise<void> {
+    // Check if email service is available
+    if (!this.transporter) {
+      console.warn('📧 Email service disabled, skipping notification');
+      return;
+    }
+
     const env = getEnv();
     const managerEmails = await this.managerRepository.findAllEmails();
     const timestamp = new Date().toISOString();
@@ -190,6 +211,24 @@ Story content is never included in email logs for privacy protection.
     }
   }
 
+  private async verifyConnection(): Promise<void> {
+    if (!this.transporter) {
+      throw new Error('Transporter not initialized');
+    }
+    
+    try {
+      await this.transporter.verify();
+      console.log('✅ SMTP connection verified successfully');
+    } catch (error) {
+      console.error('❌ SMTP verification failed:', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+        host: 'smtp.gmail.com',
+        port: 587,
+      });
+      throw error;
+    }
+  }
+
   private escapeHtml(text: string): string {
     const map: Record<string, string> = {
       '&': '&amp;',
@@ -215,6 +254,12 @@ Story content is never included in email logs for privacy protection.
     role: string,
     token: string
   ): Promise<void> {
+    // Check if email service is available  
+    if (!this.transporter) {
+      console.error('❌ Cannot send invitation - email service disabled');
+      throw new Error('Email service is not available. Please check SMTP configuration.');
+    }
+
     const env = getEnv();
     const invitationLink = `${env.FRONTEND_MANAGER_URL}/accept-invitation?token=${token}`;
     const roleDisplay = role === 'ADMIN' ? 'Admin' : 'Manager';
